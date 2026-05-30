@@ -177,15 +177,20 @@ nav ul a:hover{color:var(--text)}
 .waitlist-count{margin-top:1.3rem;font-size:.78rem;color:var(--muted2)}
 .waitlist-count strong{color:var(--muted)}
 
-/* SUCCESS BANNER */
-.success-banner{display:none;position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0f1f0a;border:1px solid rgba(201,255,71,.35);border-radius:14px;padding:1.1rem 2rem;z-index:999;max-width:480px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.6);animation:slideUp .4s ease}
-.success-banner.show{display:flex;align-items:center;gap:1rem}
-.success-banner-icon{width:36px;height:36px;background:var(--accent-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.1rem;flex-shrink:0}
-.success-banner-text .title{font-size:.95rem;font-weight:700;color:var(--accent);margin-bottom:.2rem}
-.success-banner-text .sub{font-size:.78rem;color:var(--muted);line-height:1.5}
-.success-banner-close{margin-left:auto;color:var(--muted2);cursor:pointer;font-size:1.1rem;padding:.2rem;flex-shrink:0;background:none;border:none;line-height:1}
-.success-banner-close:hover{color:var(--muted)}
-@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+/* SUCCESS MODAL */
+.success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:1.5rem}
+.success-overlay.show{display:flex;animation:fadeInOverlay .3s ease}
+.success-modal{background:#111111;border:1px solid #2a2a2a;border-radius:20px;padding:3rem 2.8rem 2.5rem;max-width:420px;width:100%;text-align:center;position:relative;animation:scaleIn .35s cubic-bezier(.34,1.56,.64,1)}
+.success-modal-close{position:absolute;top:1.2rem;right:1.4rem;background:none;border:none;color:#444;font-size:1.1rem;cursor:pointer;line-height:1;transition:color .2s}
+.success-modal-close:hover{color:#888}
+.success-check{width:56px;height:56px;border-radius:50%;background:#161616;border:1px solid #2a2a2a;display:flex;align-items:center;justify-content:center;margin:0 auto 1.8rem;font-size:1.4rem}
+.success-modal h3{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:700;color:#efefef;letter-spacing:-.02em;margin-bottom:.75rem;line-height:1.2}
+.success-modal p{font-size:.875rem;color:#666;line-height:1.7;margin-bottom:2rem;max-width:300px;margin-left:auto;margin-right:auto}
+.success-modal-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.6rem;background:#efefef;color:#080808;border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;border:none;transition:background .2s,transform .2s}
+.success-modal-btn:hover{background:#fff;transform:translateY(-1px)}
+.success-divider{width:40px;height:1px;background:#222;margin:0 auto 1.8rem}
+@keyframes fadeInOverlay{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
 
 /* FOOTER */
 footer{border-top:1px solid var(--border);padding:2.2rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
@@ -518,15 +523,20 @@ const obs=new IntersectionObserver(entries=>{
 },{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// ── Show success banner if redirected from Tally ──
-if(window.location.search.includes('submitted=true')||window.location.search.includes('tally')){
+// ── Show success modal if redirected from Tally ──
+const urlParams = new URLSearchParams(window.location.search);
+const fromTally = urlParams.has('submitted') || urlParams.get('submitted')==='true' || document.referrer.includes('tally.so');
+if(fromTally){
   setTimeout(()=>{
-    document.getElementById('success-banner').classList.add('show');
-    // Clean URL without the query param
+    document.getElementById('success-overlay').classList.add('show');
     window.history.replaceState({},'',window.location.pathname);
-    // Auto-hide after 8 seconds
-    setTimeout(()=>{document.getElementById('success-banner').classList.remove('show')},8000);
-  },600);
+  },400);
+}
+function closeSuccessBtn(){
+  document.getElementById('success-overlay').classList.remove('show');
+}
+function closeSuccess(e){
+  if(e.target===document.getElementById('success-overlay')) closeSuccessBtn();
 }
 
 // ── Waitlist ──────────────────────────────────────────────
@@ -541,14 +551,16 @@ function handleJoin(){
   document.getElementById('success-msg').style.display='block';
 }
 </script>
-<!-- SUCCESS BANNER -->
-<div class="success-banner" id="success-banner">
-  <div class="success-banner-icon">✓</div>
-  <div class="success-banner-text">
-    <div class="title">You're on the Creft waitlist!</div>
-    <div class="sub">We'll reach out before launch with early access and the best price we'll ever offer.</div>
+<!-- SUCCESS MODAL -->
+<div class="success-overlay" id="success-overlay" onclick="closeSuccess(event)">
+  <div class="success-modal">
+    <button class="success-modal-close" onclick="closeSuccessBtn()">✕</button>
+    <div class="success-check">✦</div>
+    <div class="success-divider"></div>
+    <h3>You're on the list.</h3>
+    <p>We'll reach out before launch with early access and the lowest price we'll ever offer. Keep building.</p>
+    <button class="success-modal-btn" onclick="closeSuccessBtn()">Back to Creft →</button>
   </div>
-  <button class="success-banner-close" onclick="document.getElementById('success-banner').classList.remove('show')">✕</button>
 </div>
 
 </body>
