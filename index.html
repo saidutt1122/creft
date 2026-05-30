@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creft — Describe it. Find it.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--surface:#101010;--surface2:#161616;--border:#1f1f1f;--border2:#2a2a2a;
+  --text:#efefef;--muted:#666;--muted2:#444;
+  --accent:#c9ff47;--accent-dim:rgba(201,255,71,0.10);--accent-dim2:rgba(201,255,71,0.05);
+  --font-display:'Syne',sans-serif;--font-body:'Plus Jakarta Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.016) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
+section,nav,footer,.sources,.section,.platform-section,.waitlist-section{position:relative;z-index:1}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 5%;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);z-index:100}
+.logo{font-family:var(--font-display);font-size:1.35rem;font-weight:800;color:var(--text);letter-spacing:-0.02em;text-decoration:none}
+.logo span{color:var(--accent)}
+nav ul{display:flex;gap:2rem;list-style:none}
+nav ul a{color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+nav ul a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.35rem;border-radius:6px;font-family:var(--font-body);font-weight:600;font-size:.875rem;cursor:pointer;transition:all .2s;text-decoration:none;border:none}
+.btn-primary{background:var(--accent);color:#080808}
+.btn-primary:hover{background:#d8ff5e;transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--muted);background:var(--surface)}
+
+/* HERO */
+.hero{min-height:94vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 5% 3rem}
+.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .9rem;background:var(--accent-dim2);border:1px solid rgba(201,255,71,0.18);border-radius:999px;font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .6s .1s forwards}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:var(--font-display);font-size:clamp(2.6rem,5.5vw,5.2rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;max-width:860px;opacity:0;animation:fadeUp .7s .2s forwards}
+.hero h1 .accent{color:var(--accent)}
+.hero>p{font-size:clamp(.95rem,1.7vw,1.15rem);color:var(--muted);max-width:520px;margin:1.5rem auto 0;font-weight:400;line-height:1.75;opacity:0;animation:fadeUp .7s .35s forwards}
+
+/* SEARCH */
+.search-wrap{width:100%;max-width:740px;margin:3rem auto 2rem;opacity:0;animation:fadeUp .7s .5s forwards}
+.search-box{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:.9rem 1rem;gap:.75rem;transition:border-color .2s,box-shadow .2s}
+.search-box:focus-within{border-color:rgba(201,255,71,.35);box-shadow:0 0 0 3px rgba(201,255,71,.05)}
+.search-icon{color:var(--muted);font-size:1.1rem;flex-shrink:0}
+.typewriter-wrap{flex:1;overflow:hidden;text-align:left}
+#typed-text{color:var(--muted2);font-size:.98rem;font-family:var(--font-body)}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--accent);margin-left:2px;vertical-align:middle;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.search-btn{padding:.6rem 1.3rem;background:var(--accent);color:#080808;border:none;border-radius:8px;font-weight:700;font-size:.875rem;font-family:var(--font-body);cursor:pointer;transition:background .2s;flex-shrink:0}
+.search-btn:hover{background:#d8ff5e}
+.search-hint{font-size:.77rem;color:var(--muted2);margin-top:.75rem;text-align:center}
+.hero-cta{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .65s forwards}
+
+/* ── RESULTS PREVIEW ── */
+.results-preview{width:100%;max-width:1100px;margin:4.5rem auto 0;opacity:0;animation:fadeUp .8s .8s forwards}
+.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding:0 .2rem}
+.results-query{font-size:.8rem;color:var(--muted);font-style:italic}
+.results-query span{color:var(--text);font-style:normal;font-weight:600}
+.results-count{font-size:.75rem;color:var(--muted2);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+
+.results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* ── RESULT CARD ── */
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;position:relative;transition:border-color .25s,transform .25s,box-shadow .25s;group:hover}
+.rcard:hover{border-color:rgba(201,255,71,.25);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+
+.rcard-thumb{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--surface2)}
+.rcard-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;filter:brightness(.92)}
+.rcard:hover .rcard-thumb img{transform:scale(1.04);filter:brightness(1)}
+
+/* fallback gradient when image fails */
+.rcard-thumb .thumb-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;opacity:.4}
+.rcard-thumb img.errored{opacity:0}
+
+/* source badge on image */
+.rcard-source-badge{position:absolute;top:8px;left:8px;padding:.22rem .6rem;border-radius:4px;font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;backdrop-filter:blur(6px);z-index:2}
+.badge-free{background:rgba(201,255,71,.18);border:1px solid rgba(201,255,71,.35);color:var(--accent)}
+.badge-social{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff}
+.badge-audio{background:rgba(100,180,255,.15);border:1px solid rgba(100,180,255,.3);color:#7dd3fc}
+
+/* play overlay for video */
+.play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;z-index:2}
+.rcard:hover .play-overlay{opacity:1}
+.play-btn{width:40px;height:40px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3)}
+.play-btn::after{content:'';border-left:14px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
+
+/* audio waveform visual */
+.waveform{position:absolute;bottom:0;left:0;right:0;height:36px;display:flex;align-items:flex-end;gap:2px;padding:0 10px 6px;background:linear-gradient(transparent,rgba(0,0,0,.6))}
+.wbar{flex:1;background:rgba(125,211,252,.6);border-radius:2px;animation:wave 1.2s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.6)}}
+
+/* download on hover */
+.rcard-dl{position:absolute;bottom:8px;right:8px;padding:.28rem .7rem;background:var(--accent);color:#080808;border-radius:5px;font-size:.66rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:0;transition:opacity .2s;z-index:3}
+.rcard:hover .rcard-dl{opacity:1}
+
+.rcard-meta{padding:.65rem .85rem .75rem}
+.rcard-platform{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--accent);margin-bottom:.25rem}
+.rcard-title{font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.rcard-type{font-size:.65rem;color:var(--muted2);margin-top:.2rem;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+
+/* SOURCES */
+.sources{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.6rem 5%}
+.sources-inner{display:flex;align-items:center;gap:1.5rem;max-width:1100px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.sources-label{font-size:.72rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;font-weight:700;white-space:nowrap;flex-shrink:0}
+.source-tag{display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .85rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-size:.78rem;font-weight:600;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.source-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+/* SECTION */
+.section{padding:6rem 5%;max-width:1100px;margin:0 auto}
+.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:1rem}
+.section-title{font-family:var(--font-display);font-size:clamp(1.9rem,3.3vw,2.9rem);font-weight:700;letter-spacing:-.025em;line-height:1.1;max-width:580px;margin-bottom:1.4rem}
+.section-sub{color:var(--muted);max-width:460px;line-height:1.75;font-size:.97rem}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.25rem;margin-top:3.5rem}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:2rem;position:relative;transition:border-color .2s,background .2s}
+.step-card:hover{border-color:var(--border2);background:var(--surface2)}
+.step-num{font-family:var(--font-display);font-size:2.8rem;font-weight:800;color:var(--border2);line-height:1;margin-bottom:1.1rem;letter-spacing:-.04em}
+.step-card h3{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:.55rem;letter-spacing:-.01em}
+.step-card p{font-size:.875rem;color:var(--muted);line-height:1.65}
+.step-accent{position:absolute;top:1.75rem;right:1.75rem;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.5}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:3.5rem}
+.feat{background:var(--surface);padding:2.2rem;transition:background .2s}
+.feat:hover{background:var(--surface2)}
+.feat-icon{width:42px;height:42px;background:var(--accent-dim);border:1px solid rgba(201,255,71,.14);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;font-size:1.15rem;color:var(--accent)}
+.feat h3{font-family:var(--font-display);font-size:1.02rem;font-weight:700;margin-bottom:.55rem;letter-spacing:-.01em}
+.feat p{font-size:.855rem;color:var(--muted);line-height:1.65}
+
+/* ASSETS */
+.asset-types{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:.7rem;margin-top:2.8rem}
+.asset-chip{display:flex;align-items:center;gap:.55rem;padding:.8rem .95rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:.83rem;font-weight:500;color:var(--text);transition:border-color .2s}
+.asset-chip:hover{border-color:var(--border2)}
+.chip-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+/* PLATFORM */
+.platform-section{padding:5rem 5%;max-width:1100px;margin:0 auto}
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:3rem}
+.platform-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;display:flex;align-items:center;gap:.9rem;transition:border-color .2s}
+.platform-card:hover{border-color:var(--border2)}
+.platform-icon{width:36px;height:36px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.platform-info .name{font-size:.88rem;font-weight:600;margin-bottom:.15rem}
+.platform-info .type{font-size:.72rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.platform-free{font-size:.66rem;padding:.18rem .55rem;background:var(--accent-dim);border:1px solid rgba(201,255,71,.15);border-radius:4px;color:var(--accent);font-weight:700;margin-left:auto;flex-shrink:0}
+.platform-premium{font-size:.66rem;padding:.18rem .55rem;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:4px;color:var(--muted2);font-weight:700;margin-left:auto;flex-shrink:0}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem;margin-top:3.5rem;max-width:680px}
+.pricing-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;position:relative}
+.pricing-card.featured{border-color:rgba(201,255,71,.3)}
+.plan-badge{display:inline-block;padding:.3rem .8rem;background:var(--accent-dim);border:1px solid rgba(201,255,71,.2);border-radius:999px;font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;margin-bottom:1.2rem}
+.plan-name{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
+.plan-desc{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem}
+.price-row{display:flex;align-items:baseline;gap:.35rem;margin-bottom:.5rem}
+.price-amount{font-family:var(--font-display);font-size:3rem;font-weight:800;color:var(--accent);letter-spacing:-.04em;line-height:1}
+.price-currency{font-size:1.1rem;font-weight:700;color:var(--accent);padding-top:.5rem;align-self:flex-start}
+.price-period{font-size:.85rem;color:var(--muted);align-self:flex-end;padding-bottom:.3rem}
+.price-saving{font-size:.78rem;color:var(--accent);opacity:.7;margin-bottom:1.6rem}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:2rem}
+.plan-features li{display:flex;align-items:center;gap:.7rem;font-size:.86rem;color:var(--muted)}
+.check{width:18px;height:18px;background:var(--accent-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-size:.65rem;font-weight:700}
+
+/* WAITLIST */
+.waitlist-section{padding:8rem 5%;text-align:center}
+.waitlist-inner{max-width:540px;margin:0 auto}
+.waitlist-section h2{font-family:var(--font-display);font-size:clamp(1.9rem,3.8vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:1.1rem}
+.waitlist-section .sub{color:var(--muted);margin-bottom:2.2rem;line-height:1.75}
+.waitlist-form{display:flex;gap:.7rem;max-width:420px;margin:0 auto}
+.waitlist-input{flex:1;padding:.82rem 1.05rem;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:.88rem;outline:none;transition:border-color .2s}
+.waitlist-input:focus{border-color:rgba(201,255,71,.35)}
+.waitlist-input::placeholder{color:var(--muted2)}
+.success-msg{display:none;margin-top:1.4rem;padding:.9rem 1.4rem;background:var(--accent-dim);border:1px solid rgba(201,255,71,.2);border-radius:10px;color:var(--accent);font-size:.88rem;font-weight:500}
+.waitlist-count{margin-top:1.3rem;font-size:.78rem;color:var(--muted2)}
+.waitlist-count strong{color:var(--muted)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2.2rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+footer p{font-size:.78rem;color:var(--muted2)}
+.divider{width:100%;height:1px;background:var(--border);max-width:1100px;margin:0 auto}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">Cre<span>ft</span></a>
+  <ul>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#platforms">Sources</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <a class="btn btn-primary" href="#waitlist">Join waitlist</a>
+</nav>
+
+<section class="hero">
+  <div class="badge">Now in early access</div>
+  <h1>Every creative asset.<br><span class="accent">Just describe it.</span></h1>
+  <p>Stop wasting hours across 10 different websites. Describe exactly what you need — Creft understands your intent and finds matching assets from everywhere. Photos, videos, audio, fonts, icons — one search.</p>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+      <div class="typewriter-wrap">
+        <span id="typed-text"></span><span class="cursor"></span>
+      </div>
+      <button class="search-btn">Search →</button>
+    </div>
+    <p class="search-hint">Describe a feeling, a visual style, a mood, or a sound — Creft figures out exactly what you mean</p>
+  </div>
+
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#waitlist">Join the waitlist — it's free</a>
+    <a class="btn btn-ghost" href="#how">See how it works</a>
+  </div>
+
+  <!-- LIVE RESULTS PREVIEW -->
+  <div class="results-preview">
+    <div class="results-bar">
+      <p class="results-query">Results for <span>"dark rainy tokyo street, neon glow, cinematic"</span></p>
+      <p class="results-count">247 assets found across 8 sources</p>
+    </div>
+    <div class="results-grid" id="results-grid"></div>
+  </div>
+</section>
+
+<div class="sources">
+  <div class="sources-inner">
+    <span class="sources-label">Searches across</span>
+    <span class="source-tag"><span class="source-dot"></span>YouTube</span>
+    <span class="source-tag"><span class="source-dot"></span>Instagram</span>
+    <span class="source-tag"><span class="source-dot"></span>Pexels</span>
+    <span class="source-tag"><span class="source-dot"></span>Unsplash</span>
+    <span class="source-tag"><span class="source-dot"></span>Pixabay</span>
+    <span class="source-tag"><span class="source-dot"></span>Freesound</span>
+    <span class="source-tag"><span class="source-dot"></span>Mixkit</span>
+    <span class="source-tag"><span class="source-dot"></span>Google Fonts</span>
+    <span class="source-tag"><span class="source-dot"></span>Iconify</span>
+    <span class="source-tag"><span class="source-dot"></span>LinkedIn</span>
+    <span class="source-tag" style="border-style:dashed;color:var(--muted2)">+ more coming</span>
+  </div>
+</div>
+
+<div class="section" id="how">
+  <div class="reveal">
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">Three steps. Zero tab switching.</h2>
+    <p class="section-sub">No more opening 10 tabs, trying different keywords on each site, hoping something matches. Creft gets what you mean the first time.</p>
+  </div>
+  <div class="steps reveal">
+    <div class="step-card">
+      <div class="step-num">01</div><div class="step-accent"></div>
+      <h3>Describe what you're imagining</h3>
+      <p>Type it like you'd explain it to a friend. "A dark rainy Tokyo street with neon" is a valid search. So is "a sound that feels like floating through space." No technical keywords needed.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div><div class="step-accent"></div>
+      <h3>Creft understands your intent</h3>
+      <p>Our AI reads the mood, style, tone and context behind your words — then simultaneously searches YouTube, Instagram, Pexels, Freesound, and every other connected source at once.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div><div class="step-accent"></div>
+      <h3>Download, save, or moodboard</h3>
+      <p>Free assets download in one click. Premium items redirect to the original source. Save anything into moodboards. Everything without leaving Creft.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider reveal"></div>
+
+<div class="platform-section reveal" id="platforms">
+  <p class="section-label">Every source. One search.</p>
+  <h2 class="section-title">We search everywhere so you don't have to.</h2>
+  <p class="section-sub">Free assets download directly. Premium assets redirect to the original site. You always know exactly where something comes from.</p>
+  <div class="platform-grid">
+    <div class="platform-card"><div class="platform-icon">▶</div><div class="platform-info"><div class="name">YouTube</div><div class="type">Video</div></div><span class="platform-free">Download</span></div>
+    <div class="platform-card"><div class="platform-icon">◈</div><div class="platform-info"><div class="name">Instagram</div><div class="type">Video · Photo</div></div><span class="platform-free">Download</span></div>
+    <div class="platform-card"><div class="platform-icon">◎</div><div class="platform-info"><div class="name">Pexels</div><div class="type">Photo · Video</div></div><span class="platform-free">Free</span></div>
+    <div class="platform-card"><div class="platform-icon">◎</div><div class="platform-info"><div class="name">Unsplash</div><div class="type">Photo</div></div><span class="platform-free">Free</span></div>
+    <div class="platform-card"><div class="platform-icon">◎</div><div class="platform-info"><div class="name">Pixabay</div><div class="type">Photo · Video</div></div><span class="platform-free">Free</span></div>
+    <div class="platform-card"><div class="platform-icon">♪</div><div class="platform-info"><div class="name">Freesound</div><div class="type">Audio · SFX</div></div><span class="platform-free">Free</span></div>
+    <div class="platform-card"><div class="platform-icon">♪</div><div class="platform-info"><div class="name">Mixkit</div><div class="type">Music · Video</div></div><span class="platform-free">Free</span></div>
+    <div class="platform-card"><div class="platform-icon">A</div><div class="platform-info"><div class="name">Google Fonts</div><div class="type">Fonts</div></div><span class="platform-free">Free</span></div>
+    <div class="platform-card"><div class="platform-icon">⊞</div><div class="platform-info"><div class="name">Iconify</div><div class="type">Icons</div></div><span class="platform-free">Free</span></div>
+    <div class="platform-card"><div class="platform-icon">◈</div><div class="platform-info"><div class="name">LinkedIn</div><div class="type">Video</div></div><span class="platform-free">Download</span></div>
+    <div class="platform-card"><div class="platform-icon">◈</div><div class="platform-info"><div class="name">Envato</div><div class="type">All types</div></div><span class="platform-premium">Redirects</span></div>
+    <div class="platform-card"><div class="platform-icon">◈</div><div class="platform-info"><div class="name">Epidemic Sound</div><div class="type">Music</div></div><span class="platform-premium">Redirects</span></div>
+  </div>
+</div>
+
+<div class="divider reveal"></div>
+
+<div class="section" id="features">
+  <div class="reveal">
+    <p class="section-label">Features</p>
+    <h2 class="section-title">Built for how creators actually think.</h2>
+  </div>
+  <div class="features-grid reveal">
+    <div class="feat"><div class="feat-icon">◎</div><h3>Intent-based search</h3><p>Not keyword matching. Creft reads the mood, aesthetic and feeling behind your description and returns exactly what you had in mind — even if you couldn't name it.</p></div>
+    <div class="feat"><div class="feat-icon">⊞</div><h3>Moodboard builder</h3><p>Save anything into visual boards. Organise by project, share with clients, build your entire reference library without leaving Creft.</p></div>
+    <div class="feat"><div class="feat-icon">↓</div><h3>One-click download</h3><p>Every freely available asset — including YouTube, Instagram and LinkedIn videos — downloads in one click. No third-party sites, no hunting for buttons.</p></div>
+    <div class="feat"><div class="feat-icon">⊕</div><h3>Everything in one roof</h3><p>Photos, videos, audio, fonts, icons, 3D models — search once and get results from every platform simultaneously. One tab. Zero switching.</p></div>
+    <div class="feat"><div class="feat-icon">↗</div><h3>Smart premium redirects</h3><p>Found something on Envato or Shutterstock? Creft shows it clearly marked as premium and links you directly to the original listing with one click.</p></div>
+    <div class="feat"><div class="feat-icon">◈</div><h3>For every creative</h3><p>Designers, photographers, video editors, motion designers, sound designers. If you search for creative assets, Creft was made for you.</p></div>
+  </div>
+</div>
+
+<div class="divider reveal"></div>
+
+<div class="section">
+  <div class="reveal">
+    <p class="section-label">What you can find</p>
+    <h2 class="section-title">Every asset type. One search.</h2>
+  </div>
+  <div class="asset-types reveal">
+    <div class="asset-chip"><span class="chip-dot"></span>Photos</div>
+    <div class="asset-chip"><span class="chip-dot"></span>Videos</div>
+    <div class="asset-chip"><span class="chip-dot"></span>Audio &amp; SFX</div>
+    <div class="asset-chip"><span class="chip-dot"></span>Music Tracks</div>
+    <div class="asset-chip"><span class="chip-dot"></span>Fonts</div>
+    <div class="asset-chip"><span class="chip-dot"></span>Icons</div>
+    <div class="asset-chip"><span class="chip-dot"></span>Illustrations</div>
+    <div class="asset-chip"><span class="chip-dot"></span>3D Models</div>
+    <div class="asset-chip"><span class="chip-dot"></span>Textures</div>
+    <div class="asset-chip"><span class="chip-dot"></span>Vectors</div>
+    <div class="asset-chip"><span class="chip-dot"></span>Motion Assets</div>
+    <div class="asset-chip" style="border-style:dashed;color:var(--muted2)">More coming →</div>
+  </div>
+</div>
+
+<div class="divider reveal"></div>
+
+<div class="section" id="pricing">
+  <div class="reveal">
+    <p class="section-label">Pricing</p>
+    <h2 class="section-title">Simple. No surprises. No upsells.</h2>
+    <p class="section-sub">Both plans include everything. Pick monthly for flexibility or quarterly to save.</p>
+  </div>
+  <div class="pricing-grid reveal">
+    <div class="pricing-card">
+      <div class="plan-name">Monthly</div>
+      <div class="plan-desc">Full access, cancel anytime</div>
+      <div class="price-row"><span class="price-currency">₹</span><span class="price-amount">99</span><span class="price-period">/ month</span></div>
+      <p class="price-saving">&nbsp;</p>
+      <ul class="plan-features">
+        <li><div class="check">✓</div>Unlimited intent-based searches</li>
+        <li><div class="check">✓</div>Download all free assets instantly</li>
+        <li><div class="check">✓</div>YouTube, Instagram, LinkedIn downloads</li>
+        <li><div class="check">✓</div>Unlimited moodboards</li>
+        <li><div class="check">✓</div>All asset types from all sources</li>
+        <li><div class="check">✓</div>Cancel anytime</li>
+      </ul>
+      <a class="btn btn-ghost" href="#waitlist" style="width:100%;justify-content:center;padding:.82rem">Join waitlist</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="plan-badge">Best value</div>
+      <div class="plan-name">Quarterly</div>
+      <div class="plan-desc">Pay once, use for 3 months</div>
+      <div class="price-row"><span class="price-currency">₹</span><span class="price-amount">249</span><span class="price-period">/ 3 months</span></div>
+      <p class="price-saving">Save ₹48 vs monthly — just ₹83/month</p>
+      <ul class="plan-features">
+        <li><div class="check">✓</div>Everything in Monthly plan</li>
+        <li><div class="check">✓</div>Priority access to new sources</li>
+        <li><div class="check">✓</div>Early access to new features</li>
+        <li><div class="check">✓</div>Lock in early adopter pricing</li>
+        <li><div class="check">✓</div>Support the product directly</li>
+        <li><div class="check">✓</div>Renew or cancel after 3 months</li>
+      </ul>
+      <a class="btn btn-primary" href="#waitlist" style="width:100%;justify-content:center;padding:.82rem">Join waitlist →</a>
+    </div>
+  </div>
+</div>
+
+<section class="waitlist-section" id="waitlist">
+  <div class="waitlist-inner reveal">
+    <h2>Be the first to<br><span style="color:var(--accent)">use Creft.</span></h2>
+    <p class="sub">Join the waitlist. Get early access before public launch and lock in the lowest pricing we'll ever offer.</p>
+    <div class="waitlist-form">
+      <input class="waitlist-input" type="email" id="email-input" placeholder="your@email.com">
+      <button class="btn btn-primary" onclick="handleJoin()">Join →</button>
+    </div>
+    <div class="success-msg" id="success-msg">You're on the list. We'll reach out before launch with early access.</div>
+    <p class="waitlist-count">Join <strong>designers, photographers and video editors</strong> already waiting</p>
+  </div>
+</section>
+
+<footer>
+  <a class="logo" href="#">Cre<span>ft</span></a>
+  <p>Built for creators who know what they want.</p>
+  <p>© 2026 Creft. All rights reserved.</p>
+</footer>
+
+<script>
+// ── Typewriter ──────────────────────────────────────────
+const phrases=[
+  "dark rainy Tokyo street at night with warm neon glow...",
+  "ambient sound that feels like floating through space...",
+  "vintage film grain texture, warm and slightly faded...",
+  "motion graphics that look like liquid flowing upward...",
+  "bold geometric sans-serif font for a tech brand...",
+  "cinematic aerial footage of a city at golden hour...",
+  "glass shattering in slow motion, sound effect...",
+  "minimalist icons for a fintech mobile app..."
+];
+let pIdx=0,cIdx=0,deleting=false;
+const te=document.getElementById('typed-text');
+function type(){
+  const p=phrases[pIdx];
+  if(!deleting){te.textContent=p.slice(0,++cIdx);if(cIdx===p.length){deleting=true;setTimeout(type,2400);return}setTimeout(type,38);}
+  else{te.textContent=p.slice(0,--cIdx);if(cIdx===0){deleting=false;pIdx=(pIdx+1)%phrases.length;setTimeout(type,350);return}setTimeout(type,16);}
+}
+setTimeout(type,1000);
+
+// ── Result cards with real images ───────────────────────
+const cards=[
+  {
+    platform:'Pexels', type:'Photo', badge:'free',
+    img:'https://images.pexels.com/photos/1510610/pexels-photo-1510610.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
+    fallback:'linear-gradient(135deg,#0d1117,#1a0a2e)',
+    title:'Shinjuku neon alley — rainy night',
+    isVideo:false, isAudio:false
+  },
+  {
+    platform:'YouTube', type:'Video', badge:'social',
+    img:'https://images.pexels.com/photos/3048538/pexels-photo-3048538.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
+    fallback:'linear-gradient(135deg,#1a0a0a,#2a0a0a)',
+    title:'Tokyo midnight walk — cinematic 4K',
+    isVideo:true, isAudio:false
+  },
+  {
+    platform:'Unsplash', type:'Photo', badge:'free',
+    img:'https://images.pexels.com/photos/18867525/pexels-photo-18867525.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
+    fallback:'linear-gradient(135deg,#0a0a1a,#0a1020)',
+    title:'Wet street neon reflections',
+    isVideo:false, isAudio:false
+  },
+  {
+    platform:'Freesound', type:'Audio', badge:'audio',
+    img:'',
+    fallback:'linear-gradient(135deg,#0a1520,#071520)',
+    title:'Rain on city streets — loop',
+    isVideo:false, isAudio:true
+  },
+  {
+    platform:'Pixabay', type:'Video', badge:'free',
+    img:'https://images.pexels.com/photos/31495722/pexels-photo-31495722.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
+    fallback:'linear-gradient(135deg,#100a1a,#0a0a20)',
+    title:'Tokyo rainy streets — vibrant night',
+    isVideo:true, isAudio:false
+  },
+  {
+    platform:'Instagram', type:'Reel', badge:'social',
+    img:'https://images.pexels.com/photos/30970419/pexels-photo-30970419.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
+    fallback:'linear-gradient(135deg,#1a0a10,#0a0a1a)',
+    title:'Rainy Tokyo alleyway walk reel',
+    isVideo:true, isAudio:false
+  },
+  {
+    platform:'Mixkit', type:'Video', badge:'free',
+    img:'https://images.pexels.com/photos/30099320/pexels-photo-30099320.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
+    fallback:'linear-gradient(135deg,#0a1010,#050a10)',
+    title:'Tokyo neon street — night walk',
+    isVideo:true, isAudio:false
+  },
+  {
+    platform:'Pexels', type:'Photo', badge:'free',
+    img:'https://images.pexels.com/photos/31001252/pexels-photo-31001252.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
+    fallback:'linear-gradient(135deg,#050510,#0a0520)',
+    title:'Japan neon signs — wet pavement',
+    isVideo:false, isAudio:false
+  }
+];
+
+const grid=document.getElementById('results-grid');
+cards.forEach((c,i)=>{
+  const card=document.createElement('div');
+  card.className='rcard';
+  card.style.animationDelay=(0.05*i)+'s';
+
+  // waveform bars for audio
+  const waveBars = c.isAudio ? Array.from({length:18},(_,j)=>`<div class="wbar" style="height:${8+Math.random()*16}px;animation-delay:${j*0.06}s"></div>`).join('') : '';
+
+  const badgeClass = c.badge==='free'?'badge-free':c.badge==='audio'?'badge-audio':'badge-social';
+  const badgeLabel = c.badge==='free'?'Free':c.badge==='audio'?'Audio':'↓ Save';
+
+  card.innerHTML=`
+    <div class="rcard-thumb" style="${!c.img?'background:'+c.fallback:''}">
+      ${c.img?`<img src="${c.img}" alt="${c.title}" loading="lazy" onerror="this.classList.add('errored');this.parentElement.style.background='${c.fallback}'">`:''}
+      ${!c.img?`<div class="thumb-fallback">♪</div>`:''}
+      <div class="rcard-source-badge ${badgeClass}">${badgeLabel}</div>
+      ${c.isVideo?'<div class="play-overlay"><div class="play-btn"></div></div>':''}
+      ${c.isAudio?`<div class="waveform">${waveBars}</div>`:''}
+      <div class="rcard-dl">↓ Download</div>
+    </div>
+    <div class="rcard-meta">
+      <div class="rcard-platform">${c.platform}</div>
+      <div class="rcard-title">${c.title}</div>
+      <div class="rcard-type">${c.type}</div>
+    </div>`;
+  grid.appendChild(card);
+});
+
+// ── Scroll reveal ────────────────────────────────────────
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ── Waitlist ──────────────────────────────────────────────
+function handleJoin(){
+  const email=document.getElementById('email-input').value;
+  if(!email||!email.includes('@')){
+    document.getElementById('email-input').style.borderColor='rgba(255,80,80,.5)';
+    setTimeout(()=>{document.getElementById('email-input').style.borderColor=''},1500);
+    return;
+  }
+  document.querySelector('.waitlist-form').style.display='none';
+  document.getElementById('success-msg').style.display='block';
+}
+</script>
+</body>
+</html>
