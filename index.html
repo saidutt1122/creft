@@ -3,565 +3,502 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Creft — Describe it. Find it.</title>
+<title>Creft — Your entire creative workflow. One place.</title>
+<meta name="description" content="Creft is the creative workspace for designers, editors, and every creative professional. Find assets from everywhere, build moodboards, present to clients — one place.">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080808;--surface:#101010;--surface2:#161616;--border:#1f1f1f;--border2:#2a2a2a;
-  --text:#efefef;--muted:#666;--muted2:#444;
-  --accent:#c9ff47;--accent-dim:rgba(201,255,71,0.10);--accent-dim2:rgba(201,255,71,0.05);
-  --font-display:'Syne',sans-serif;--font-body:'Plus Jakarta Sans',sans-serif;
+  --bg:#06060a;
+  --surface:rgba(255,255,255,0.03);
+  --surface-hover:rgba(255,255,255,0.055);
+  --border:rgba(255,255,255,0.07);
+  --border-bright:rgba(255,255,255,0.12);
+  --text:#f0f0f0;
+  --muted:rgba(255,255,255,0.45);
+  --subtle:rgba(255,255,255,0.25);
+  --accent:#c9ff47;
+  --accent-glow:rgba(201,255,71,0.18);
+  --accent-dim:rgba(201,255,71,0.08);
+  --blue:#4d7cff;
+  --blue-glow:rgba(77,124,255,0.2);
+  --blue-dim:rgba(77,124,255,0.1);
+  --font-display:'Syne',sans-serif;
+  --font-body:'Plus Jakarta Sans',sans-serif;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.016) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
-section,nav,footer,.sources,.section,.platform-section,.waitlist-section{position:relative;z-index:1}
 
-/* NAV */
-nav{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 5%;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);z-index:100}
-.logo{font-family:var(--font-display);font-size:1.35rem;font-weight:800;color:var(--text);letter-spacing:-0.02em;text-decoration:none}
-.logo span{color:var(--accent)}
+.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+.orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(201,255,71,0.065) 0%,transparent 70%);top:-250px;left:-150px}
+.orb-2{width:600px;height:600px;background:radial-gradient(circle,rgba(77,124,255,0.08) 0%,transparent 70%);top:100px;right:-150px}
+.orb-3{width:500px;height:500px;background:radial-gradient(circle,rgba(201,255,71,0.04) 0%,transparent 70%);bottom:15%;left:25%}
+
+section,nav,footer,.strip,.csec,.wsec,.wwsec{position:relative;z-index:1}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 5%;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(6,6,10,0.88);backdrop-filter:blur(28px) saturate(180%);z-index:100}
+.logo{font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--text);letter-spacing:-.02em;text-decoration:none}
+.logo-accent{color:var(--accent)}
 nav ul{display:flex;gap:2rem;list-style:none}
-nav ul a{color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}
+nav ul a{color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:500;transition:color .2s}
 nav ul a:hover{color:var(--text)}
-.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.35rem;border-radius:6px;font-family:var(--font-body);font-weight:600;font-size:.875rem;cursor:pointer;transition:all .2s;text-decoration:none;border:none}
-.btn-primary{background:var(--accent);color:#080808}
-.btn-primary:hover{background:#d8ff5e;transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border2)}
-.btn-ghost:hover{border-color:var(--muted);background:var(--surface)}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.25rem;border-radius:8px;font-family:var(--font-body);font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;text-decoration:none;border:none}
+.btn-p{background:var(--accent);color:#06060a;box-shadow:0 0 24px var(--accent-glow)}
+.btn-p:hover{background:#d8ff5e;box-shadow:0 0 36px rgba(201,255,71,.3);transform:translateY(-1px)}
+.btn-g{background:var(--surface);color:var(--text);border:1px solid var(--border-bright)}
+.btn-g:hover{background:var(--surface-hover);border-color:rgba(255,255,255,.2)}
 
-/* HERO */
-.hero{min-height:94vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 5% 3rem}
-.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .9rem;background:var(--accent-dim2);border:1px solid rgba(201,255,71,0.18);border-radius:999px;font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .6s .1s forwards}
-.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 5% 4rem;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;padding:.32rem .9rem .32rem .45rem;background:rgba(201,255,71,.05);border:1px solid rgba(201,255,71,.14);border-radius:999px;font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2.8rem;opacity:0;animation:fu .6s .1s forwards}
+.edot{width:20px;height:20px;border-radius:50%;background:rgba(201,255,71,.1);border:1px solid rgba(201,255,71,.2);display:flex;align-items:center;justify-content:center}
+.edot::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.hero h1{font-family:var(--font-display);font-size:clamp(2.6rem,5.5vw,5.2rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;max-width:860px;opacity:0;animation:fadeUp .7s .2s forwards}
-.hero h1 .accent{color:var(--accent)}
-.hero>p{font-size:clamp(.95rem,1.7vw,1.15rem);color:var(--muted);max-width:520px;margin:1.5rem auto 0;font-weight:400;line-height:1.75;opacity:0;animation:fadeUp .7s .35s forwards}
 
-/* SEARCH */
-.search-wrap{width:100%;max-width:740px;margin:3rem auto 2rem;opacity:0;animation:fadeUp .7s .5s forwards}
-.search-box{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:.9rem 1rem;gap:.75rem;transition:border-color .2s,box-shadow .2s}
-.search-box:focus-within{border-color:rgba(201,255,71,.35);box-shadow:0 0 0 3px rgba(201,255,71,.05)}
-.search-icon{color:var(--muted);font-size:1.1rem;flex-shrink:0}
-.typewriter-wrap{flex:1;overflow:hidden;text-align:left}
-#typed-text{color:var(--muted2);font-size:.98rem;font-family:var(--font-body)}
-.cursor{display:inline-block;width:2px;height:1em;background:var(--accent);margin-left:2px;vertical-align:middle;animation:blink 1s step-end infinite}
+.hero h1{font-family:var(--font-display);font-size:clamp(2.8rem,5.8vw,5.8rem);font-weight:800;line-height:.97;letter-spacing:-.04em;max-width:920px;opacity:0;animation:fu .7s .25s forwards}
+.gl{display:block}
+.gl-lime{background:linear-gradient(135deg,#c9ff47 0%,#9ed600 60%,#c9ff47 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gl-blue{background:linear-gradient(135deg,#4d7cff 0%,#7ba3ff 60%,#4d7cff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.hero-p{font-size:clamp(.95rem,1.6vw,1.1rem);color:var(--muted);max-width:500px;margin:2rem auto 0;font-weight:400;line-height:1.8;opacity:0;animation:fu .7s .4s forwards}
+
+.sbox-wrap{width:100%;max-width:700px;margin:3rem auto 2.5rem;opacity:0;animation:fu .7s .55s forwards}
+.sbox-shell{position:relative;border-radius:16px;padding:1px;background:linear-gradient(135deg,rgba(201,255,71,.1),rgba(77,124,255,.08),rgba(201,255,71,.05));transition:all .3s}
+.sbox-shell:focus-within{background:linear-gradient(135deg,rgba(201,255,71,.25),rgba(77,124,255,.2),rgba(201,255,71,.15));box-shadow:0 0 50px rgba(201,255,71,.08),0 4px 20px rgba(0,0,0,.4)}
+.sbox{display:flex;align-items:center;background:#0d0d14;border-radius:15px;padding:.88rem 1rem;gap:.8rem}
+.sicon{color:var(--subtle);font-size:1rem;flex-shrink:0}
+.tw{flex:1;overflow:hidden;text-align:left}
+#tw{color:rgba(255,255,255,.3);font-size:.95rem}
+.cur{display:inline-block;width:2px;height:.9em;background:var(--accent);margin-left:2px;vertical-align:middle;animation:blink 1s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.search-btn{padding:.6rem 1.3rem;background:var(--accent);color:#080808;border:none;border-radius:8px;font-weight:700;font-size:.875rem;font-family:var(--font-body);cursor:pointer;transition:background .2s;flex-shrink:0}
-.search-btn:hover{background:#d8ff5e}
-.search-hint{font-size:.77rem;color:var(--muted2);margin-top:.75rem;text-align:center}
-.hero-cta{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .65s forwards}
+.sbtn{padding:.6rem 1.25rem;background:var(--accent);color:#06060a;border:none;border-radius:9px;font-weight:700;font-size:.85rem;font-family:var(--font-body);cursor:pointer;transition:all .2s;flex-shrink:0;box-shadow:0 0 18px var(--accent-glow)}
+.sbtn:hover{background:#d8ff5e;box-shadow:0 0 28px rgba(201,255,71,.35)}
+.shint{font-size:.74rem;color:var(--subtle);margin-top:.75rem;text-align:center}
 
-/* ── RESULTS PREVIEW ── */
-.results-preview{width:100%;max-width:1100px;margin:4.5rem auto 0;opacity:0;animation:fadeUp .8s .8s forwards}
-.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding:0 .2rem}
-.results-query{font-size:.8rem;color:var(--muted);font-style:italic}
-.results-query span{color:var(--text);font-style:normal;font-weight:600}
-.results-count{font-size:.75rem;color:var(--muted2);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.cta-row{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fu .7s .7s forwards}
 
-.results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sp{display:flex;align-items:center;gap:1rem;opacity:0;animation:fu .6s .88s forwards;flex-wrap:wrap;justify-content:center;margin-top:.5rem}
+.sp-avs{display:flex}
+.sp-av{width:26px;height:26px;border-radius:50%;border:2px solid var(--bg);margin-left:-7px;background:linear-gradient(135deg,#1a1a30,#2a2a50);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--muted)}
+.sp-av:first-child{margin-left:0}
+.sp-t{font-size:.76rem;color:var(--subtle)}
+.sp-t strong{color:var(--muted)}
 
-/* ── RESULT CARD ── */
-.rcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;position:relative;transition:border-color .25s,transform .25s,box-shadow .25s;group:hover}
-.rcard:hover{border-color:rgba(201,255,71,.25);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.rpreview{width:100%;max-width:1100px;margin:4.5rem auto 0;opacity:0;animation:fu .8s 1.05s forwards}
+.rbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding:0 .2rem}
+.rq{font-size:.77rem;color:var(--subtle);font-style:italic}
+.rq strong{color:var(--muted);font-style:normal}
+.rc-label{font-size:.7rem;color:var(--subtle);font-weight:600;text-transform:uppercase;letter-spacing:.07em}
+.rgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rc{background:rgba(255,255,255,0.028);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;position:relative;transition:all .28s cubic-bezier(.25,.46,.45,.94)}
+.rc:hover{border-color:rgba(201,255,71,.18);transform:translateY(-3px);box-shadow:0 18px 50px rgba(0,0,0,.65),0 0 0 1px rgba(201,255,71,.08)}
+.rthumb{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:rgba(255,255,255,.02)}
+.rthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease;filter:brightness(.85)}
+.rc:hover .rthumb img{transform:scale(1.07);filter:brightness(.96)}
+.rthumb img.err{opacity:0}
+.rfb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;opacity:.25}
+.rb{position:absolute;top:7px;left:7px;padding:.16rem .52rem;border-radius:4px;font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;backdrop-filter:blur(8px)}
+.rb-f{background:rgba(201,255,71,.14);border:1px solid rgba(201,255,71,.28);color:var(--accent)}
+.rb-r{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
+.rb-a{background:rgba(77,124,255,.14);border:1px solid rgba(77,124,255,.28);color:#93b4ff}
+.pr{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.rc:hover .pr{opacity:1}
+.pc{width:36px;height:36px;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.22);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.pc::after{content:'';border-left:11px solid #fff;border-top:6px solid transparent;border-bottom:6px solid transparent;margin-left:3px}
+.wf{position:absolute;bottom:0;left:0;right:0;height:32px;display:flex;align-items:flex-end;gap:2px;padding:0 10px 5px;background:linear-gradient(transparent,rgba(0,0,0,.65))}
+.wb{flex:1;border-radius:2px 2px 0 0;animation:wave 1.4s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.8)}}
+.rdl{position:absolute;bottom:7px;right:7px;padding:.2rem .55rem;background:var(--accent);color:#06060a;border-radius:4px;font-size:.6rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:0;transition:opacity .2s}
+.rc:hover .rdl{opacity:1}
+.rm{padding:.58rem .78rem .68rem}
+.rpl{font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--accent);margin-bottom:.18rem;opacity:.75}
+.rt{font-size:.77rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.rty{font-size:.58rem;color:var(--subtle);margin-top:.15rem;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
 
-.rcard-thumb{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--surface2)}
-.rcard-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;filter:brightness(.92)}
-.rcard:hover .rcard-thumb img{transform:scale(1.04);filter:brightness(1)}
+.strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.4rem 0;overflow:hidden;position:relative}
+.strip::before,.strip::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.strip::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+.strip::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent)}
+.strip-inner{display:flex;align-items:center;gap:1rem;width:max-content;animation:scroll 30s linear infinite}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.stag{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .72rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;font-size:.73rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.65}
 
-/* fallback gradient when image fails */
-.rcard-thumb .thumb-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;opacity:.4}
-.rcard-thumb img.errored{opacity:0}
+.csec{padding:7rem 5%;max-width:1100px;margin:0 auto}
+.slabel{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:.85rem;opacity:.8}
+.stitle{font-family:var(--font-display);font-size:clamp(2rem,3.5vw,3.1rem);font-weight:800;letter-spacing:-.035em;line-height:1.02;max-width:600px;margin-bottom:1.2rem}
+.ssub{color:var(--muted);max-width:480px;line-height:1.8;font-size:.95rem}
 
-/* source badge on image */
-.rcard-source-badge{position:absolute;top:8px;left:8px;padding:.22rem .6rem;border-radius:4px;font-size:.65rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;backdrop-filter:blur(6px);z-index:2}
-.badge-free{background:rgba(201,255,71,.18);border:1px solid rgba(201,255,71,.35);color:var(--accent)}
-.badge-social{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff}
-.badge-audio{background:rgba(100,180,255,.15);border:1px solid rgba(100,180,255,.3);color:#7dd3fc}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:20px;overflow:hidden;margin-top:4rem;border:1px solid var(--border)}
+.step{background:var(--bg);padding:2.4rem 2rem;position:relative;transition:background .25s;overflow:hidden}
+.step::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(201,255,71,.15),transparent);opacity:0;transition:opacity .3s}
+.step:hover{background:rgba(255,255,255,.022)}
+.step:hover::before{opacity:1}
+.sico{width:38px;height:38px;border-radius:9px;background:var(--accent-dim);border:1px solid rgba(201,255,71,.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.6rem;font-size:1.1rem}
+.snum{font-family:var(--font-display);font-size:2.8rem;font-weight:800;line-height:1;margin-bottom:1rem;letter-spacing:-.05em;-webkit-text-fill-color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.1)}
+.step h3{font-family:var(--font-display);font-size:1.02rem;font-weight:700;margin-bottom:.55rem;letter-spacing:-.01em}
+.step p{font-size:.848rem;color:var(--muted);line-height:1.72}
 
-/* play overlay for video */
-.play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;z-index:2}
-.rcard:hover .play-overlay{opacity:1}
-.play-btn{width:40px;height:40px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3)}
-.play-btn::after{content:'';border-left:14px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:20px;overflow:hidden;margin-top:4rem;border:1px solid var(--border)}
+.feat{background:var(--bg);padding:2.2rem;transition:background .25s;position:relative;overflow:hidden}
+.feat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent)}
+.feat:hover{background:rgba(255,255,255,.022)}
+.fico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;font-size:1rem}
+.fico-l{background:var(--accent-dim);border:1px solid rgba(201,255,71,.14);color:var(--accent)}
+.fico-b{background:var(--blue-dim);border:1px solid rgba(77,124,255,.2);color:var(--blue)}
+.feat h3{font-family:var(--font-display);font-size:.98rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-.01em}
+.feat p{font-size:.832rem;color:var(--muted);line-height:1.72}
 
-/* audio waveform visual */
-.waveform{position:absolute;bottom:0;left:0;right:0;height:36px;display:flex;align-items:flex-end;gap:2px;padding:0 10px 6px;background:linear-gradient(transparent,rgba(0,0,0,.6))}
-.wbar{flex:1;background:rgba(125,211,252,.6);border-radius:2px;animation:wave 1.2s ease-in-out infinite}
-@keyframes wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.6)}}
+.wwsec{padding:7rem 5%;max-width:1100px;margin:0 auto}
+.wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4rem}
+.wc{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:18px;padding:2rem;position:relative;overflow:hidden;transition:all .32s cubic-bezier(.25,.46,.45,.94)}
+.wc::after{content:'';position:absolute;inset:0;border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.03),transparent 60%);pointer-events:none}
+.wc:hover{background:rgba(255,255,255,.04);transform:translateY(-4px);box-shadow:0 24px 64px rgba(0,0,0,.55)}
+.wc-wide{grid-column:span 2}
+.wc-lime{border-color:rgba(201,255,71,.1)}
+.wc-lime:hover{border-color:rgba(201,255,71,.22);box-shadow:0 24px 64px rgba(0,0,0,.45),0 0 48px rgba(201,255,71,.06)}
+.wc-blue{border-color:rgba(77,124,255,.1)}
+.wc-blue:hover{border-color:rgba(77,124,255,.22);box-shadow:0 24px 64px rgba(0,0,0,.45),0 0 48px rgba(77,124,255,.08)}
+.wemo{font-size:1.9rem;margin-bottom:1.2rem;display:block;line-height:1}
+.wc h3{font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin-bottom:.65rem;letter-spacing:-.015em;line-height:1.25}
+.wc p{font-size:.838rem;color:var(--muted);line-height:1.78}
+.wtag{display:inline-flex;align-items:center;padding:.2rem .62rem;border-radius:999px;font-size:.62rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-top:1.1rem}
+.wtag-l{background:var(--accent-dim);border:1px solid rgba(201,255,71,.14);color:var(--accent)}
+.wtag-b{background:var(--blue-dim);border:1px solid rgba(77,124,255,.18);color:var(--blue)}
 
-/* download on hover */
-.rcard-dl{position:absolute;bottom:8px;right:8px;padding:.28rem .7rem;background:var(--accent);color:#080808;border-radius:5px;font-size:.66rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:0;transition:opacity .2s;z-index:3}
-.rcard:hover .rcard-dl{opacity:1}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:.75rem;margin-top:3.5rem}
+.pc2{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:12px;padding:1.05rem 1.25rem;display:flex;align-items:center;gap:.8rem;transition:all .2s}
+.pc2:hover{background:rgba(255,255,255,.04);border-color:var(--border-bright);transform:translateY(-1px)}
+.pico{width:32px;height:32px;border-radius:7px;background:rgba(255,255,255,.05);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;color:var(--muted)}
+.pn{font-size:.84rem;font-weight:600;margin-bottom:.1rem}
+.pt{font-size:.68rem;color:var(--subtle);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.pf{font-size:.6rem;padding:.14rem .48rem;background:var(--accent-dim);border:1px solid rgba(201,255,71,.14);border-radius:4px;color:var(--accent);font-weight:700;margin-left:auto;flex-shrink:0}
+.pref{font-size:.6rem;padding:.14rem .48rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;color:var(--subtle);font-weight:700;margin-left:auto;flex-shrink:0}
 
-.rcard-meta{padding:.65rem .85rem .75rem}
-.rcard-platform{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--accent);margin-bottom:.25rem}
-.rcard-title{font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
-.rcard-type{font-size:.65rem;color:var(--muted2);margin-top:.2rem;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem;margin-top:3rem}
+.ach{display:flex;align-items:center;gap:.48rem;padding:.72rem .88rem;background:rgba(255,255,255,.024);border:1px solid var(--border);border-radius:9px;font-size:.8rem;font-weight:500;color:var(--muted);transition:all .2s}
+.ach:hover{background:rgba(255,255,255,.04);color:var(--text);border-color:var(--border-bright)}
+.adot{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.65;flex-shrink:0}
 
-/* SOURCES */
-.sources{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.6rem 5%}
-.sources-inner{display:flex;align-items:center;gap:1.5rem;max-width:1100px;margin:0 auto;flex-wrap:wrap;justify-content:center}
-.sources-label{font-size:.72rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;font-weight:700;white-space:nowrap;flex-shrink:0}
-.source-tag{display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .85rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-size:.78rem;font-weight:600;color:var(--muted);white-space:nowrap;flex-shrink:0}
-.source-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.hdiv{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:1100px;margin:0 auto}
 
-/* SECTION */
-.section{padding:6rem 5%;max-width:1100px;margin:0 auto}
-.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:1rem}
-.section-title{font-family:var(--font-display);font-size:clamp(1.9rem,3.3vw,2.9rem);font-weight:700;letter-spacing:-.025em;line-height:1.1;max-width:580px;margin-bottom:1.4rem}
-.section-sub{color:var(--muted);max-width:460px;line-height:1.75;font-size:.97rem}
+.wsec{padding:9rem 5%;text-align:center;position:relative;overflow:hidden}
+.wglow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:350px;background:radial-gradient(ellipse,rgba(201,255,71,0.055) 0%,transparent 65%);pointer-events:none}
+.winn{max-width:600px;margin:0 auto;position:relative;z-index:1}
+.winn h2{font-family:var(--font-display);font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:800;letter-spacing:-.04em;line-height:.97;margin-bottom:1.2rem}
+.wl-g{background:linear-gradient(135deg,var(--accent),#a8d900 50%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.winn .wsub{color:var(--muted);margin-bottom:2.8rem;line-height:1.8;font-size:.97rem;max-width:440px;margin-left:auto;margin-right:auto}
+.wbtn{font-size:1rem;padding:1rem 3rem;border-radius:12px;display:inline-flex;align-items:center;gap:.5rem;box-shadow:0 0 50px rgba(201,255,71,.2),0 8px 32px rgba(0,0,0,.5);margin-bottom:1.2rem}
+.wbtn:hover{box-shadow:0 0 70px rgba(201,255,71,.3),0 8px 32px rgba(0,0,0,.5)}
+.wnote{font-size:.76rem;color:var(--subtle)}
 
-/* HOW IT WORKS */
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.25rem;margin-top:3.5rem}
-.step-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:2rem;position:relative;transition:border-color .2s,background .2s}
-.step-card:hover{border-color:var(--border2);background:var(--surface2)}
-.step-num{font-family:var(--font-display);font-size:2.8rem;font-weight:800;color:var(--border2);line-height:1;margin-bottom:1.1rem;letter-spacing:-.04em}
-.step-card h3{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:.55rem;letter-spacing:-.01em}
-.step-card p{font-size:.875rem;color:var(--muted);line-height:1.65}
-.step-accent{position:absolute;top:1.75rem;right:1.75rem;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.5}
+footer{border-top:1px solid var(--border);padding:1.8rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+footer p{font-size:.74rem;color:var(--subtle)}
+.fl{display:flex;gap:1.5rem}
+.fl a{font-size:.74rem;color:var(--subtle);text-decoration:none;transition:color .2s}
+.fl a:hover{color:var(--muted)}
 
-/* FEATURES */
-.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:3.5rem}
-.feat{background:var(--surface);padding:2.2rem;transition:background .2s}
-.feat:hover{background:var(--surface2)}
-.feat-icon{width:42px;height:42px;background:var(--accent-dim);border:1px solid rgba(201,255,71,.14);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;font-size:1.15rem;color:var(--accent)}
-.feat h3{font-family:var(--font-display);font-size:1.02rem;font-weight:700;margin-bottom:.55rem;letter-spacing:-.01em}
-.feat p{font-size:.855rem;color:var(--muted);line-height:1.65}
+@keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.rev{opacity:0;transform:translateY(15px);transition:opacity .7s ease,transform .7s ease}
+.rev.vis{opacity:1;transform:translateY(0)}
 
-/* ASSETS */
-.asset-types{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:.7rem;margin-top:2.8rem}
-.asset-chip{display:flex;align-items:center;gap:.55rem;padding:.8rem .95rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:.83rem;font-weight:500;color:var(--text);transition:border-color .2s}
-.asset-chip:hover{border-color:var(--border2)}
-.chip-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
-
-/* PLATFORM */
-.platform-section{padding:5rem 5%;max-width:1100px;margin:0 auto}
-.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:3rem}
-.platform-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;display:flex;align-items:center;gap:.9rem;transition:border-color .2s}
-.platform-card:hover{border-color:var(--border2)}
-.platform-icon{width:36px;height:36px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.platform-info .name{font-size:.88rem;font-weight:600;margin-bottom:.15rem}
-.platform-info .type{font-size:.72rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
-.platform-free{font-size:.66rem;padding:.18rem .55rem;background:var(--accent-dim);border:1px solid rgba(201,255,71,.15);border-radius:4px;color:var(--accent);font-weight:700;margin-left:auto;flex-shrink:0}
-.platform-premium{font-size:.66rem;padding:.18rem .55rem;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:4px;color:var(--muted2);font-weight:700;margin-left:auto;flex-shrink:0}
-
-/* PRICING */
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem;margin-top:3.5rem;max-width:680px}
-.pricing-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;position:relative}
-.pricing-card.featured{border-color:rgba(201,255,71,.3)}
-.plan-badge{display:inline-block;padding:.3rem .8rem;background:var(--accent-dim);border:1px solid rgba(201,255,71,.2);border-radius:999px;font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;margin-bottom:1.2rem}
-.plan-name{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
-.plan-desc{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem}
-.price-row{display:flex;align-items:baseline;gap:.35rem;margin-bottom:.5rem}
-.price-amount{font-family:var(--font-display);font-size:3rem;font-weight:800;color:var(--accent);letter-spacing:-.04em;line-height:1}
-.price-currency{font-size:1.1rem;font-weight:700;color:var(--accent);padding-top:.5rem;align-self:flex-start}
-.price-period{font-size:.85rem;color:var(--muted);align-self:flex-end;padding-bottom:.3rem}
-.price-saving{font-size:.78rem;color:var(--accent);opacity:.7;margin-bottom:1.6rem}
-.plan-features{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:2rem}
-.plan-features li{display:flex;align-items:center;gap:.7rem;font-size:.86rem;color:var(--muted)}
-.check{width:18px;height:18px;background:var(--accent-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);font-size:.65rem;font-weight:700}
-
-/* WAITLIST */
-.waitlist-section{padding:8rem 5%;text-align:center}
-.waitlist-inner{max-width:540px;margin:0 auto}
-.waitlist-section h2{font-family:var(--font-display);font-size:clamp(1.9rem,3.8vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:1.1rem}
-.waitlist-section .sub{color:var(--muted);margin-bottom:2.2rem;line-height:1.75}
-.waitlist-form{display:flex;gap:.7rem;max-width:420px;margin:0 auto}
-.waitlist-input{flex:1;padding:.82rem 1.05rem;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:.88rem;outline:none;transition:border-color .2s}
-.waitlist-input:focus{border-color:rgba(201,255,71,.35)}
-.waitlist-input::placeholder{color:var(--muted2)}
-.success-msg{display:none;margin-top:1.4rem;padding:.9rem 1.4rem;background:var(--accent-dim);border:1px solid rgba(201,255,71,.2);border-radius:10px;color:var(--accent);font-size:.88rem;font-weight:500}
-.waitlist-count{margin-top:1.3rem;font-size:.78rem;color:var(--muted2)}
-.waitlist-count strong{color:var(--muted)}
-
-/* SUCCESS MODAL */
-.success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:1.5rem}
-.success-overlay.show{display:flex;animation:fadeInOverlay .3s ease}
-.success-modal{background:#111111;border:1px solid #2a2a2a;border-radius:20px;padding:3rem 2.8rem 2.5rem;max-width:420px;width:100%;text-align:center;position:relative;animation:scaleIn .35s cubic-bezier(.34,1.56,.64,1)}
-.success-modal-close{position:absolute;top:1.2rem;right:1.4rem;background:none;border:none;color:#444;font-size:1.1rem;cursor:pointer;line-height:1;transition:color .2s}
-.success-modal-close:hover{color:#888}
-.success-check{width:56px;height:56px;border-radius:50%;background:#161616;border:1px solid #2a2a2a;display:flex;align-items:center;justify-content:center;margin:0 auto 1.8rem;font-size:1.4rem}
-.success-modal h3{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:700;color:#efefef;letter-spacing:-.02em;margin-bottom:.75rem;line-height:1.2}
-.success-modal p{font-size:.875rem;color:#666;line-height:1.7;margin-bottom:2rem;max-width:300px;margin-left:auto;margin-right:auto}
-.success-modal-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.6rem;background:#efefef;color:#080808;border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;border:none;transition:background .2s,transform .2s}
-.success-modal-btn:hover{background:#fff;transform:translateY(-1px)}
-.success-divider{width:40px;height:1px;background:#222;margin:0 auto 1.8rem}
-@keyframes fadeInOverlay{from{opacity:0}to{opacity:1}}
-@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
-
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:2.2rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
-footer p{font-size:.78rem;color:var(--muted2)}
-.divider{width:100%;height:1px;background:var(--border);max-width:1100px;margin:0 auto}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){nav ul{display:none}.steps{grid-template-columns:1fr}.fgrid{grid-template-columns:1fr 1fr}.wgrid{grid-template-columns:1fr 1fr}.wc-wide{grid-column:span 2}.rgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.fgrid,.wgrid{grid-template-columns:1fr}.wc-wide{grid-column:span 1}.rgrid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
 <nav>
-  <a class="logo" href="#">Cre<span>ft</span></a>
+  <a class="logo" href="#">Cre<span class="logo-accent">ft</span></a>
   <ul>
     <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
     <li><a href="#platforms">Sources</a></li>
-    <li><a href="#pricing">Pricing</a></li>
   </ul>
-  <a class="btn btn-primary" href="https://tally.so/r/EkMJW2" target="_blank">Join waitlist</a>
+  <a class="btn btn-p" href="https://tally.so/r/EkMJW2" target="_blank">Join waitlist</a>
 </nav>
 
 <section class="hero">
-  <div class="badge">Now in early access</div>
-  <h1>Every creative asset.<br><span class="accent">Just describe it.</span></h1>
-  <p>Stop wasting hours across 10 different websites. Describe exactly what you need — Creft understands your intent and finds matching assets from everywhere. Photos, videos, audio, fonts, icons — one search.</p>
+  <div class="eyebrow"><div class="edot"></div>For every creative professional</div>
 
-  <div class="search-wrap">
-    <div class="search-box">
-      <span class="search-icon">⌕</span>
-      <div class="typewriter-wrap">
-        <span id="typed-text"></span><span class="cursor"></span>
+  <h1>
+    Your entire creative<br>
+    <span class="gl gl-lime">workflow.</span>
+    <span class="gl gl-blue">One place.</span>
+  </h1>
+
+  <p class="hero-p">Stop working in 10 different tabs. Find assets from everywhere, build project moodboards, present to clients, and get approvals — without switching tools.</p>
+
+  <div class="sbox-wrap">
+    <div class="sbox-shell">
+      <div class="sbox">
+        <span class="sicon">⌕</span>
+        <div class="tw"><span id="tw"></span><span class="cur"></span></div>
+        <button class="sbtn">Search →</button>
       </div>
-      <button class="search-btn">Search →</button>
     </div>
-    <p class="search-hint">Describe a feeling, a visual style, a mood, or a sound — Creft figures out exactly what you mean</p>
+    <p class="shint">Describe a mood, a visual, a sound — Creft searches 12+ platforms simultaneously</p>
   </div>
 
-  <div class="hero-cta">
-    <a class="btn btn-primary" href="https://tally.so/r/EkMJW2" target="_blank">Join the waitlist — it's free</a>
-    <a class="btn btn-ghost" href="#how">See how it works</a>
+  <div class="cta-row">
+    <a class="btn btn-p" href="https://tally.so/r/EkMJW2" target="_blank">Join the waitlist — it's free</a>
+    <a class="btn btn-g" href="#how">See how it works</a>
   </div>
 
-  <!-- LIVE RESULTS PREVIEW -->
-  <div class="results-preview">
-    <div class="results-bar">
-      <p class="results-query">Results for <span>"dark rainy tokyo street, neon glow, cinematic"</span></p>
-      <p class="results-count">247 assets found across 8 sources</p>
+  <div class="sp">
+    <div class="sp-avs">
+      <div class="sp-av">DS</div><div class="sp-av">MR</div><div class="sp-av">AK</div><div class="sp-av">PV</div><div class="sp-av">+</div>
     </div>
-    <div class="results-grid" id="results-grid"></div>
+    <p class="sp-t">Joined by <strong>designers, editors and motion artists</strong> already on the list</p>
+  </div>
+
+  <div class="rpreview">
+    <div class="rbar">
+      <p class="rq">Results for <strong>"dark rainy Tokyo street, neon glow, cinematic"</strong></p>
+      <p class="rc-label">Assets from 10+ sources</p>
+    </div>
+    <div class="rgrid" id="rgrid"></div>
   </div>
 </section>
 
-<div class="sources">
-  <div class="sources-inner">
-    <span class="sources-label">Searches across</span>
-    <span class="source-tag"><span class="source-dot"></span>YouTube</span>
-    <span class="source-tag"><span class="source-dot"></span>Instagram</span>
-    <span class="source-tag"><span class="source-dot"></span>Pexels</span>
-    <span class="source-tag"><span class="source-dot"></span>Unsplash</span>
-    <span class="source-tag"><span class="source-dot"></span>Pixabay</span>
-    <span class="source-tag"><span class="source-dot"></span>Freesound</span>
-    <span class="source-tag"><span class="source-dot"></span>Mixkit</span>
-    <span class="source-tag"><span class="source-dot"></span>Google Fonts</span>
-    <span class="source-tag"><span class="source-dot"></span>Iconify</span>
-    <span class="source-tag"><span class="source-dot"></span>LinkedIn</span>
-    <span class="source-tag" style="border-style:dashed;color:var(--muted2)">+ more coming</span>
-  </div>
+<div class="strip">
+  <div class="strip-inner" id="strip-inner"></div>
 </div>
 
-<div class="section" id="how">
-  <div class="reveal">
-    <p class="section-label">How it works</p>
-    <h2 class="section-title">Three steps. Zero tab switching.</h2>
-    <p class="section-sub">No more opening 10 tabs, trying different keywords on each site, hoping something matches. Creft gets what you mean the first time.</p>
+<div class="csec" id="how">
+  <div class="rev">
+    <p class="slabel">How it works</p>
+    <h2 class="stitle">Three steps. Zero tab switching.</h2>
+    <p class="ssub">No more opening 10 tabs, trying different keywords on each platform. Creft gets what you mean the first time.</p>
   </div>
-  <div class="steps reveal">
-    <div class="step-card">
-      <div class="step-num">01</div><div class="step-accent"></div>
+  <div class="steps rev">
+    <div class="step">
+      <div class="sico">🧠</div>
+      <div class="snum">01</div>
       <h3>Describe what you're imagining</h3>
-      <p>Type it like you'd explain it to a friend. "A dark rainy Tokyo street with neon" is a valid search. So is "a sound that feels like floating through space." No technical keywords needed.</p>
+      <p>Type it like you'd explain it to a creative director. "Dark luxury Diwali campaign with gold tones" works. So does "a sound that feels like floating through space." No technical keywords needed.</p>
     </div>
-    <div class="step-card">
-      <div class="step-num">02</div><div class="step-accent"></div>
-      <h3>Creft understands your intent</h3>
-      <p>Our AI reads the mood, style, tone and context behind your words — then simultaneously searches YouTube, Instagram, Pexels, Freesound, and every other connected source at once.</p>
+    <div class="step">
+      <div class="sico">⚡</div>
+      <div class="snum">02</div>
+      <h3>Creft searches everywhere at once</h3>
+      <p>Our AI reads the mood, style, tone and context behind your words — then simultaneously searches Pexels, Freesound, Behance, Google Fonts, Sketchfab and every other connected source.</p>
     </div>
-    <div class="step-card">
-      <div class="step-num">03</div><div class="step-accent"></div>
-      <h3>Download, save, or moodboard</h3>
-      <p>Free assets download in one click. Premium items redirect to the original source. Save anything into moodboards. Everything without leaving Creft.</p>
-    </div>
-  </div>
-</div>
-
-<div class="divider reveal"></div>
-
-<div class="platform-section reveal" id="platforms">
-  <p class="section-label">Every source. One search.</p>
-  <h2 class="section-title">We search everywhere so you don't have to.</h2>
-  <p class="section-sub">Free assets download directly. Premium assets redirect to the original site. You always know exactly where something comes from.</p>
-  <div class="platform-grid">
-    <div class="platform-card"><div class="platform-icon">▶</div><div class="platform-info"><div class="name">YouTube</div><div class="type">Video</div></div><span class="platform-free">Download</span></div>
-    <div class="platform-card"><div class="platform-icon">◈</div><div class="platform-info"><div class="name">Instagram</div><div class="type">Video · Photo</div></div><span class="platform-free">Download</span></div>
-    <div class="platform-card"><div class="platform-icon">◎</div><div class="platform-info"><div class="name">Pexels</div><div class="type">Photo · Video</div></div><span class="platform-free">Free</span></div>
-    <div class="platform-card"><div class="platform-icon">◎</div><div class="platform-info"><div class="name">Unsplash</div><div class="type">Photo</div></div><span class="platform-free">Free</span></div>
-    <div class="platform-card"><div class="platform-icon">◎</div><div class="platform-info"><div class="name">Pixabay</div><div class="type">Photo · Video</div></div><span class="platform-free">Free</span></div>
-    <div class="platform-card"><div class="platform-icon">♪</div><div class="platform-info"><div class="name">Freesound</div><div class="type">Audio · SFX</div></div><span class="platform-free">Free</span></div>
-    <div class="platform-card"><div class="platform-icon">♪</div><div class="platform-info"><div class="name">Mixkit</div><div class="type">Music · Video</div></div><span class="platform-free">Free</span></div>
-    <div class="platform-card"><div class="platform-icon">A</div><div class="platform-info"><div class="name">Google Fonts</div><div class="type">Fonts</div></div><span class="platform-free">Free</span></div>
-    <div class="platform-card"><div class="platform-icon">⊞</div><div class="platform-info"><div class="name">Iconify</div><div class="type">Icons</div></div><span class="platform-free">Free</span></div>
-    <div class="platform-card"><div class="platform-icon">◈</div><div class="platform-info"><div class="name">LinkedIn</div><div class="type">Video</div></div><span class="platform-free">Download</span></div>
-    <div class="platform-card"><div class="platform-icon">◈</div><div class="platform-info"><div class="name">Envato</div><div class="type">All types</div></div><span class="platform-premium">Redirects</span></div>
-    <div class="platform-card"><div class="platform-icon">◈</div><div class="platform-info"><div class="name">Epidemic Sound</div><div class="type">Music</div></div><span class="platform-premium">Redirects</span></div>
-  </div>
-</div>
-
-<div class="divider reveal"></div>
-
-<div class="section" id="features">
-  <div class="reveal">
-    <p class="section-label">Features</p>
-    <h2 class="section-title">Built for how creators actually think.</h2>
-  </div>
-  <div class="features-grid reveal">
-    <div class="feat"><div class="feat-icon">◎</div><h3>Intent-based search</h3><p>Not keyword matching. Creft reads the mood, aesthetic and feeling behind your description and returns exactly what you had in mind — even if you couldn't name it.</p></div>
-    <div class="feat"><div class="feat-icon">⊞</div><h3>Moodboard builder</h3><p>Save anything into visual boards. Organise by project, share with clients, build your entire reference library without leaving Creft.</p></div>
-    <div class="feat"><div class="feat-icon">↓</div><h3>One-click download</h3><p>Every freely available asset — including YouTube, Instagram and LinkedIn videos — downloads in one click. No third-party sites, no hunting for buttons.</p></div>
-    <div class="feat"><div class="feat-icon">⊕</div><h3>Everything in one roof</h3><p>Photos, videos, audio, fonts, icons, 3D models — search once and get results from every platform simultaneously. One tab. Zero switching.</p></div>
-    <div class="feat"><div class="feat-icon">↗</div><h3>Smart premium redirects</h3><p>Found something on Envato or Shutterstock? Creft shows it clearly marked as premium and links you directly to the original listing with one click.</p></div>
-    <div class="feat"><div class="feat-icon">◈</div><h3>For every creative</h3><p>Designers, photographers, video editors, motion designers, sound designers. If you search for creative assets, Creft was made for you.</p></div>
-  </div>
-</div>
-
-<div class="divider reveal"></div>
-
-<div class="section">
-  <div class="reveal">
-    <p class="section-label">What you can find</p>
-    <h2 class="section-title">Every asset type. One search.</h2>
-  </div>
-  <div class="asset-types reveal">
-    <div class="asset-chip"><span class="chip-dot"></span>Photos</div>
-    <div class="asset-chip"><span class="chip-dot"></span>Videos</div>
-    <div class="asset-chip"><span class="chip-dot"></span>Audio &amp; SFX</div>
-    <div class="asset-chip"><span class="chip-dot"></span>Music Tracks</div>
-    <div class="asset-chip"><span class="chip-dot"></span>Fonts</div>
-    <div class="asset-chip"><span class="chip-dot"></span>Icons</div>
-    <div class="asset-chip"><span class="chip-dot"></span>Illustrations</div>
-    <div class="asset-chip"><span class="chip-dot"></span>3D Models</div>
-    <div class="asset-chip"><span class="chip-dot"></span>Textures</div>
-    <div class="asset-chip"><span class="chip-dot"></span>Vectors</div>
-    <div class="asset-chip"><span class="chip-dot"></span>Motion Assets</div>
-    <div class="asset-chip" style="border-style:dashed;color:var(--muted2)">More coming →</div>
-  </div>
-</div>
-
-<div class="divider reveal"></div>
-
-<div class="section" id="pricing">
-  <div class="reveal">
-    <p class="section-label">Pricing</p>
-    <h2 class="section-title">Simple. No surprises. No upsells.</h2>
-    <p class="section-sub">Both plans include everything. Pick monthly for flexibility or quarterly to save.</p>
-  </div>
-  <div class="pricing-grid reveal">
-    <div class="pricing-card">
-      <div class="plan-name">Monthly</div>
-      <div class="plan-desc">Full access, cancel anytime</div>
-      <div class="price-row"><span class="price-currency">₹</span><span class="price-amount">99</span><span class="price-period">/ month</span></div>
-      <p class="price-saving">&nbsp;</p>
-      <ul class="plan-features">
-        <li><div class="check">✓</div>Unlimited intent-based searches</li>
-        <li><div class="check">✓</div>Download all free assets instantly</li>
-        <li><div class="check">✓</div>YouTube, Instagram, LinkedIn downloads</li>
-        <li><div class="check">✓</div>Unlimited moodboards</li>
-        <li><div class="check">✓</div>All asset types from all sources</li>
-        <li><div class="check">✓</div>Cancel anytime</li>
-      </ul>
-      <a class="btn btn-ghost" href="https://tally.so/r/EkMJW2" target="_blank" style="width:100%;justify-content:center;padding:.82rem">Join waitlist</a>
-    </div>
-    <div class="pricing-card featured">
-      <div class="plan-badge">Best value</div>
-      <div class="plan-name">Quarterly</div>
-      <div class="plan-desc">Pay once, use for 3 months</div>
-      <div class="price-row"><span class="price-currency">₹</span><span class="price-amount">249</span><span class="price-period">/ 3 months</span></div>
-      <p class="price-saving">Save ₹48 vs monthly — just ₹83/month</p>
-      <ul class="plan-features">
-        <li><div class="check">✓</div>Everything in Monthly plan</li>
-        <li><div class="check">✓</div>Priority access to new sources</li>
-        <li><div class="check">✓</div>Early access to new features</li>
-        <li><div class="check">✓</div>Lock in early adopter pricing</li>
-        <li><div class="check">✓</div>Support the product directly</li>
-        <li><div class="check">✓</div>Renew or cancel after 3 months</li>
-      </ul>
-      <a class="btn btn-primary" href="https://tally.so/r/EkMJW2" target="_blank" style="width:100%;justify-content:center;padding:.82rem">Join waitlist →</a>
+    <div class="step">
+      <div class="sico">📋</div>
+      <div class="snum">03</div>
+      <h3>Save, moodboard, and present</h3>
+      <p>Save assets to project boards, organise by section, upload your own work, and share a clean link with your client. No account needed on their end.</p>
     </div>
   </div>
 </div>
 
-<section class="waitlist-section" id="waitlist">
-  <div class="waitlist-inner reveal">
-    <h2>Be the first to<br><span style="color:var(--accent)">use Creft.</span></h2>
-    <p class="sub">Join the waitlist. Get early access before public launch and lock in the lowest pricing we'll ever offer.</p>
-    <a class="btn btn-primary" href="https://tally.so/r/EkMJW2" target="_blank" style="font-size:1rem;padding:.9rem 2.4rem;border-radius:8px;display:inline-flex;margin-bottom:1.2rem">Join Creft Waitlist →</a>
-    <p class="waitlist-count">Join <strong>designers, photographers and video editors</strong> already waiting</p>
+<div class="hdiv rev"></div>
+
+<div class="csec" id="features">
+  <div class="rev">
+    <p class="slabel">Features</p>
+    <h2 class="stitle">Everything a creative needs.</h2>
   </div>
-</section>
+  <div class="fgrid rev">
+    <div class="feat"><div class="fico fico-l">◎</div><h3>Intent-based search</h3><p>Not keyword matching. Creft reads the mood, aesthetic and feeling behind your description and returns results from 12+ platforms simultaneously.</p></div>
+    <div class="feat"><div class="fico fico-b">⊞</div><h3>Project moodboards</h3><p>Every project has a board. Add a brief, save assets, upload your own work and organise by section. Your creative memory, always accessible.</p></div>
+    <div class="feat"><div class="fico fico-b">↗</div><h3>Client sharing</h3><p>Share boards with clients via a clean link. They view, comment on specific assets and give approval. No client account required.</p></div>
+    <div class="feat"><div class="fico fico-l">🎨</div><h3>Color palette tools</h3><p>Extract colors from any reference image, get AI mood palettes from your project brief, expand any color into a full harmonious palette.</p></div>
+    <div class="feat"><div class="fico fico-b">⊕</div><h3>Design tool plugins</h3><p>Search assets and see client comments without leaving Premiere Pro, After Effects, Illustrator, Photoshop or Figma.</p></div>
+    <div class="feat"><div class="fico fico-l">◈</div><h3>Built for every creative</h3><p>Motion designers, brand designers, UI/UX, video editors, social media. If you do creative work for clients, Creft was built for you.</p></div>
+  </div>
+</div>
+
+<div class="hdiv rev"></div>
+
+<div class="wwsec">
+  <div class="rev">
+    <p class="slabel">Why Creft</p>
+    <h2 class="stitle">Things you've never had before.</h2>
+    <p class="ssub">Every feature exists because a creative professional was wasting time doing it the old way. Not anymore.</p>
+  </div>
+
+  <div class="wgrid rev">
+    <div class="wc wc-wide wc-lime">
+      <span class="wemo">🧠</span>
+      <h3>Your project brief drives every search</h3>
+      <p>Tell Creft what you're building — "dark luxury Diwali campaign, gold aesthetic, women 25–45" — and every search you run is automatically informed by that context. No repeating yourself. No re-explaining the vibe. Creft remembers your brief and finds assets that actually fit the project, not just the keyword.</p>
+      <span class="wtag wtag-l">Brief Intelligence</span>
+    </div>
+
+    <div class="wc wc-blue">
+      <span class="wemo">🎨</span>
+      <h3>Style DNA extraction</h3>
+      <p>Upload any reference image and Creft extracts its visual DNA — dominant colors, texture quality, lighting mood. Every future search gets filtered through that aesthetic automatically. Describe the look once. Never again.</p>
+      <span class="wtag wtag-b">Visual AI</span>
+    </div>
+
+    <div class="wc wc-lime">
+      <span class="wemo">✦</span>
+      <h3>"Find more like this"</h3>
+      <p>Found the perfect photo? One button searches everywhere for more assets with the same visual properties and mood. Eliminates 80% of manual searching instantly.</p>
+      <span class="wtag wtag-l">Smart Search</span>
+    </div>
+
+    <div class="wc wc-blue">
+      <span class="wemo">🤝</span>
+      <h3>Clients who give useful feedback</h3>
+      <p>When your client views a board, Creft asks them 3 simple questions. Their answers automatically refine your next search. Creative direction without a 45-minute call.</p>
+      <span class="wtag wtag-b">Client AI</span>
+    </div>
+
+    <div class="wc wc-wide wc-lime">
+      <span class="wemo">⚡</span>
+      <h3>Your search history becomes your moodboard</h3>
+      <p>Every search you run inside a project builds a visual record automatically in the background. Open the project next week and your entire creative thinking is already organised — without saving a single thing. Creft works for you even when you're not actively using it.</p>
+      <span class="wtag wtag-l">Passive Memory</span>
+    </div>
+
+    <div class="wc wc-lime">
+      <span class="wemo">📋</span>
+      <h3>Version stacking, automatic</h3>
+      <p>Upload Sketch_v1, Sketch_v2, Final — they stack automatically. Creft shows your work side by side with the references that inspired it. Your journey, documented.</p>
+      <span class="wtag wtag-l">Version Memory</span>
+    </div>
+
+    <div class="wc wc-blue">
+      <span class="wemo">🔌</span>
+      <h3>Never leave your software</h3>
+      <p>Search Creft inside Premiere Pro, After Effects, Illustrator, Photoshop and Figma. Insert directly onto canvas or timeline. See client comments as a plugin notification.</p>
+      <span class="wtag wtag-b">Plugins</span>
+    </div>
+
+    <div class="wc wc-lime">
+      <span class="wemo">🇮🇳</span>
+      <h3>Built for Indian creatives</h3>
+      <p>Creft understands Indian cultural context — Diwali, Holi, regional aesthetics, Indian brand language. What every western tool gets wrong, Creft gets right.</p>
+      <span class="wtag wtag-l">Built in India</span>
+    </div>
+
+    <div class="wc">
+      <span class="wemo">🆓</span>
+      <h3>Completely free to start</h3>
+      <p>No credit card. No trial period. No feature walls. Get addicted first — that's the deal. Pricing comes after you can't imagine working without it.</p>
+    </div>
+  </div>
+</div>
+
+<div class="hdiv rev"></div>
+
+<div class="csec" id="platforms">
+  <div class="rev">
+    <p class="slabel">Every source. One search.</p>
+    <h2 class="stitle">We search everywhere so you don't have to.</h2>
+    <p class="ssub">Free assets available directly. Premium assets redirect to the original site. You always know exactly where something comes from.</p>
+  </div>
+  <div class="pgrid rev">
+    <div class="pc2"><div class="pico">◎</div><div><div class="pn">Pexels</div><div class="pt">Photo · Video</div></div><span class="pf">Free</span></div>
+    <div class="pc2"><div class="pico">◎</div><div><div class="pn">Unsplash</div><div class="pt">Photo</div></div><span class="pf">Free</span></div>
+    <div class="pc2"><div class="pico">◎</div><div><div class="pn">Pixabay</div><div class="pt">Photo · Video</div></div><span class="pf">Free</span></div>
+    <div class="pc2"><div class="pico">▶</div><div><div class="pn">YouTube</div><div class="pt">Video</div></div><span class="pf">Free</span></div>
+    <div class="pc2"><div class="pico">♪</div><div><div class="pn">Freesound</div><div class="pt">Audio · SFX</div></div><span class="pf">Free</span></div>
+    <div class="pc2"><div class="pico">♫</div><div><div class="pn">Jamendo</div><div class="pt">Music</div></div><span class="pf">Free</span></div>
+    <div class="pc2"><div class="pico">A</div><div><div class="pn">Google Fonts</div><div class="pt">Fonts</div></div><span class="pf">Free</span></div>
+    <div class="pc2"><div class="pico">⊞</div><div><div class="pn">Iconify</div><div class="pt">Icons</div></div><span class="pf">Free</span></div>
+    <div class="pc2"><div class="pico">◉</div><div><div class="pn">Sketchfab</div><div class="pt">3D Models</div></div><span class="pf">Free</span></div>
+    <div class="pc2"><div class="pico">⊟</div><div><div class="pn">Behance</div><div class="pt">References</div></div><span class="pref">Reference</span></div>
+    <div class="pc2"><div class="pico">⊟</div><div><div class="pn">Dribbble</div><div class="pt">References</div></div><span class="pref">Reference</span></div>
+    <div class="pc2"><div class="pico">⊡</div><div><div class="pn">Pinterest</div><div class="pt">Moodboard</div></div><span class="pref">Reference</span></div>
+  </div>
+</div>
+
+<div class="hdiv rev"></div>
+
+<div class="csec">
+  <div class="rev">
+    <p class="slabel">What you can find</p>
+    <h2 class="stitle">Every asset type. One search.</h2>
+  </div>
+  <div class="agrid rev">
+    <div class="ach"><span class="adot"></span>Photos</div>
+    <div class="ach"><span class="adot"></span>Videos</div>
+    <div class="ach"><span class="adot"></span>Audio &amp; SFX</div>
+    <div class="ach"><span class="adot"></span>Music Tracks</div>
+    <div class="ach"><span class="adot"></span>Fonts</div>
+    <div class="ach"><span class="adot"></span>Icons</div>
+    <div class="ach"><span class="adot"></span>3D Models</div>
+    <div class="ach"><span class="adot"></span>References</div>
+    <div class="ach"><span class="adot"></span>Moodboards</div>
+    <div class="ach"><span class="adot"></span>Color Palettes</div>
+    <div class="ach"><span class="adot"></span>Illustrations</div>
+    <div class="ach" style="border-style:dashed;color:var(--subtle)">More coming →</div>
+  </div>
+</div>
+
+<div class="hdiv rev"></div>
+
+<div class="wsec" id="waitlist">
+  <div class="wglow"></div>
+  <div class="winn rev">
+    <h2>Be the first to<br><span class="wl-g">use Creft.</span></h2>
+    <p class="wsub">Get early access before public launch. Free product — no credit card, no commitment, no catch.</p>
+    <a class="btn btn-p wbtn" href="https://tally.so/r/EkMJW2" target="_blank">Join Creft Waitlist — it's free →</a>
+    <p class="wnote">For designers, editors, motion artists, and every creative professional</p>
+  </div>
+</div>
 
 <footer>
-  <a class="logo" href="#">Cre<span>ft</span></a>
-  <p>Built for creators who know what they want.</p>
-  <p>© 2026 Creft. All rights reserved.</p>
+  <a class="logo" href="#">Cre<span class="logo-accent">ft</span></a>
+  <div class="fl">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#platforms">Sources</a>
+  </div>
+  <p>Proudly built in India 🇮🇳 &nbsp;·&nbsp; © 2026 Creft</p>
 </footer>
 
 <script>
-// ── Typewriter ──────────────────────────────────────────
-const phrases=[
-  "dark rainy Tokyo street at night with warm neon glow...",
-  "ambient sound that feels like floating through space...",
-  "vintage film grain texture, warm and slightly faded...",
-  "motion graphics that look like liquid flowing upward...",
-  "bold geometric sans-serif font for a tech brand...",
-  "cinematic aerial footage of a city at golden hour...",
-  "glass shattering in slow motion, sound effect...",
-  "minimalist icons for a fintech mobile app..."
-];
-let pIdx=0,cIdx=0,deleting=false;
-const te=document.getElementById('typed-text');
-function type(){
-  const p=phrases[pIdx];
-  if(!deleting){te.textContent=p.slice(0,++cIdx);if(cIdx===p.length){deleting=true;setTimeout(type,2400);return}setTimeout(type,38);}
-  else{te.textContent=p.slice(0,--cIdx);if(cIdx===0){deleting=false;pIdx=(pIdx+1)%phrases.length;setTimeout(type,350);return}setTimeout(type,16);}
-}
+const phrases=["dark luxury Diwali jewellery campaign, gold aesthetic...","ambient sound that feels like floating through space...","bold geometric sans-serif for a tech startup brand...","cinematic aerial footage of a city at golden hour...","melancholic lo-fi music for late night designing...","minimalist icons for a fintech mobile app...","abstract 3D glass sculpture with soft studio lighting...","dark moody references for a horror short film..."];
+let pI=0,cI=0,dl=false;
+const te=document.getElementById('tw');
+function type(){const p=phrases[pI];if(!dl){te.textContent=p.slice(0,++cI);if(cI===p.length){dl=true;setTimeout(type,2600);return}setTimeout(type,38);}else{te.textContent=p.slice(0,--cI);if(cI===0){dl=false;pI=(pI+1)%phrases.length;setTimeout(type,400);return}setTimeout(type,16);}}
 setTimeout(type,1000);
 
-// ── Result cards with real images ───────────────────────
 const cards=[
-  {
-    platform:'Pexels', type:'Photo', badge:'free',
-    img:'https://images.pexels.com/photos/1510610/pexels-photo-1510610.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
-    fallback:'linear-gradient(135deg,#0d1117,#1a0a2e)',
-    title:'Shinjuku neon alley — rainy night',
-    isVideo:false, isAudio:false
-  },
-  {
-    platform:'YouTube', type:'Video', badge:'social',
-    img:'https://images.pexels.com/photos/3048538/pexels-photo-3048538.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
-    fallback:'linear-gradient(135deg,#1a0a0a,#2a0a0a)',
-    title:'Tokyo midnight walk — cinematic 4K',
-    isVideo:true, isAudio:false
-  },
-  {
-    platform:'Unsplash', type:'Photo', badge:'free',
-    img:'https://images.pexels.com/photos/18867525/pexels-photo-18867525.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
-    fallback:'linear-gradient(135deg,#0a0a1a,#0a1020)',
-    title:'Wet street neon reflections',
-    isVideo:false, isAudio:false
-  },
-  {
-    platform:'Freesound', type:'Audio', badge:'audio',
-    img:'',
-    fallback:'linear-gradient(135deg,#0a1520,#071520)',
-    title:'Rain on city streets — loop',
-    isVideo:false, isAudio:true
-  },
-  {
-    platform:'Pixabay', type:'Video', badge:'free',
-    img:'https://images.pexels.com/photos/31495722/pexels-photo-31495722.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
-    fallback:'linear-gradient(135deg,#100a1a,#0a0a20)',
-    title:'Tokyo rainy streets — vibrant night',
-    isVideo:true, isAudio:false
-  },
-  {
-    platform:'Instagram', type:'Reel', badge:'social',
-    img:'https://images.pexels.com/photos/30970419/pexels-photo-30970419.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
-    fallback:'linear-gradient(135deg,#1a0a10,#0a0a1a)',
-    title:'Rainy Tokyo alleyway walk reel',
-    isVideo:true, isAudio:false
-  },
-  {
-    platform:'Mixkit', type:'Video', badge:'free',
-    img:'https://images.pexels.com/photos/30099320/pexels-photo-30099320.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
-    fallback:'linear-gradient(135deg,#0a1010,#050a10)',
-    title:'Tokyo neon street — night walk',
-    isVideo:true, isAudio:false
-  },
-  {
-    platform:'Pexels', type:'Photo', badge:'free',
-    img:'https://images.pexels.com/photos/31001252/pexels-photo-31001252.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',
-    fallback:'linear-gradient(135deg,#050510,#0a0520)',
-    title:'Japan neon signs — wet pavement',
-    isVideo:false, isAudio:false
-  }
+  {pl:'Pexels',ty:'Photo',b:'f',img:'https://images.pexels.com/photos/1510610/pexels-photo-1510610.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',fb:'linear-gradient(135deg,#0d1117,#1a0a2e)',ti:'Shinjuku neon alley — rainy night',v:false,a:false},
+  {pl:'YouTube',ty:'Video',b:'r',img:'https://images.pexels.com/photos/3048538/pexels-photo-3048538.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',fb:'linear-gradient(135deg,#1a0a0a,#2a0a0a)',ti:'Tokyo midnight walk — cinematic 4K',v:true,a:false},
+  {pl:'Unsplash',ty:'Photo',b:'f',img:'https://images.pexels.com/photos/18867525/pexels-photo-18867525.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',fb:'linear-gradient(135deg,#0a0a1a,#0a1020)',ti:'Wet street neon reflections',v:false,a:false},
+  {pl:'Freesound',ty:'Audio',b:'a',img:'',fb:'linear-gradient(135deg,#0a1520,#071520)',ti:'Rain on city streets — loop',v:false,a:true},
+  {pl:'Pixabay',ty:'Video',b:'f',img:'https://images.pexels.com/photos/31495722/pexels-photo-31495722.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',fb:'linear-gradient(135deg,#100a1a,#0a0a20)',ti:'Tokyo rainy streets — night',v:true,a:false},
+  {pl:'Behance',ty:'Reference',b:'r',img:'https://images.pexels.com/photos/30970419/pexels-photo-30970419.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',fb:'linear-gradient(135deg,#1a0a10,#0a0a1a)',ti:'Dark brand identity — neon',v:false,a:false},
+  {pl:'Jamendo',ty:'Music',b:'a',img:'',fb:'linear-gradient(135deg,#0a1010,#050a10)',ti:'Dark cinematic ambient track',v:false,a:true},
+  {pl:'Pexels',ty:'Photo',b:'f',img:'https://images.pexels.com/photos/31001252/pexels-photo-31001252.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&fit=crop',fb:'linear-gradient(135deg,#050510,#0a0520)',ti:'Japan neon signs — wet pavement',v:false,a:false}
 ];
-
-const grid=document.getElementById('results-grid');
-cards.forEach((c,i)=>{
-  const card=document.createElement('div');
-  card.className='rcard';
-  card.style.animationDelay=(0.05*i)+'s';
-
-  // waveform bars for audio
-  const waveBars = c.isAudio ? Array.from({length:18},(_,j)=>`<div class="wbar" style="height:${8+Math.random()*16}px;animation-delay:${j*0.06}s"></div>`).join('') : '';
-
-  const badgeClass = c.badge==='free'?'badge-free':c.badge==='audio'?'badge-audio':'badge-social';
-  const badgeLabel = c.badge==='free'?'Free':c.badge==='audio'?'Audio':'↓ Save';
-
-  card.innerHTML=`
-    <div class="rcard-thumb" style="${!c.img?'background:'+c.fallback:''}">
-      ${c.img?`<img src="${c.img}" alt="${c.title}" loading="lazy" onerror="this.classList.add('errored');this.parentElement.style.background='${c.fallback}'">`:''}
-      ${!c.img?`<div class="thumb-fallback">♪</div>`:''}
-      <div class="rcard-source-badge ${badgeClass}">${badgeLabel}</div>
-      ${c.isVideo?'<div class="play-overlay"><div class="play-btn"></div></div>':''}
-      ${c.isAudio?`<div class="waveform">${waveBars}</div>`:''}
-      <div class="rcard-dl">↓ Download</div>
-    </div>
-    <div class="rcard-meta">
-      <div class="rcard-platform">${c.platform}</div>
-      <div class="rcard-title">${c.title}</div>
-      <div class="rcard-type">${c.type}</div>
-    </div>`;
-  grid.appendChild(card);
+const grid=document.getElementById('rgrid');
+cards.forEach(c=>{
+  const el=document.createElement('div');el.className='rc';
+  const wb=c.a?Array.from({length:18},(_,j)=>`<div class="wb" style="height:${8+Math.random()*16}px;animation-delay:${j*.07}s;background:rgba(77,124,255,.5)"></div>`).join(''):'';
+  const bc=c.b==='f'?'rb-f':c.b==='a'?'rb-a':'rb-r';
+  const bl=c.b==='f'?'Free':c.b==='a'?'Audio':'Ref';
+  el.innerHTML=`<div class="rthumb" style="${!c.img?'background:'+c.fb:''}">
+    ${c.img?`<img src="${c.img}" alt="${c.ti}" loading="lazy" onerror="this.classList.add('err');this.parentElement.style.background='${c.fb}'">`:''}
+    ${!c.img?`<div class="rfb">♪</div>`:''}
+    <div class="rb ${bc}">${bl}</div>
+    ${c.v?'<div class="pr"><div class="pc"></div></div>':''}
+    ${c.a?`<div class="wf">${wb}</div>`:''}
+    <div class="rdl">↓ Save</div>
+  </div>
+  <div class="rm"><div class="rpl">${c.pl}</div><div class="rt">${c.ti}</div><div class="rty">${c.ty}</div></div>`;
+  grid.appendChild(el);
 });
 
-// ── Scroll reveal ────────────────────────────────────────
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
-},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const sources=['Pexels','Unsplash','Pixabay','YouTube','Freesound','Jamendo','Google Fonts','Iconify','Sketchfab','Behance','Dribbble','Pinterest','Artstation'];
+const si=document.getElementById('strip-inner');
+[...sources,...sources,...sources,...sources].forEach(s=>{
+  const t=document.createElement('span');t.className='stag';
+  t.innerHTML=`<span class="sdot"></span>${s}`;si.appendChild(t);
+});
 
-// ── Show success modal if redirected from Tally ──
-const urlParams = new URLSearchParams(window.location.search);
-const fromTally = urlParams.has('submitted') || urlParams.get('submitted')==='true' || document.referrer.includes('tally.so');
-if(fromTally){
-  setTimeout(()=>{
-    document.getElementById('success-overlay').classList.add('show');
-    window.history.replaceState({},'',window.location.pathname);
-  },400);
-}
-function closeSuccessBtn(){
-  document.getElementById('success-overlay').classList.remove('show');
-}
-function closeSuccess(e){
-  if(e.target===document.getElementById('success-overlay')) closeSuccessBtn();
-}
-
-// ── Waitlist ──────────────────────────────────────────────
-function handleJoin(){
-  const email=document.getElementById('email-input').value;
-  if(!email||!email.includes('@')){
-    document.getElementById('email-input').style.borderColor='rgba(255,80,80,.5)';
-    setTimeout(()=>{document.getElementById('email-input').style.borderColor=''},1500);
-    return;
-  }
-  document.querySelector('.waitlist-form').style.display='none';
-  document.getElementById('success-msg').style.display='block';
-}
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}});},{threshold:.08});
+document.querySelectorAll('.rev').forEach(el=>obs.observe(el));
 </script>
-<!-- SUCCESS MODAL -->
-<div class="success-overlay" id="success-overlay" onclick="closeSuccess(event)">
-  <div class="success-modal">
-    <button class="success-modal-close" onclick="closeSuccessBtn()">✕</button>
-    <div class="success-check" style="width:auto;height:auto;padding:.65rem 1.2rem;border-radius:10px;font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-.02em;background:#161616;border:1px solid #2a2a2a;">Cre<span style="color:#c9ff47">ft</span></div>
-    <div class="success-divider"></div>
-    <h3>You're on the list.</h3>
-    <p>We'll reach out before launch with early access and the lowest price we'll ever offer. Keep building.</p>
-    <button class="success-modal-btn" onclick="closeSuccessBtn()">Back to Creft →</button>
-  </div>
-</div>
-
 </body>
 </html>
